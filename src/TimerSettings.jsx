@@ -1,6 +1,20 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 
-export default function TimerSettings({ onWorkClick }) {
+export default function TimerSettings({
+  workTime,
+  restTime,
+  roundResetTime, // ✅ Added
+  onWorkClick,
+  onRestClick,
+  onRoundResetClick, // ✅ Added
+}) {
+  // Convert seconds to MM:SS format
+  const formatTime = (seconds) => {
+    return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(
+      seconds % 60
+    ).padStart(2, "0")}`;
+  };
+
   return (
     <Box
       sx={{
@@ -21,14 +35,24 @@ export default function TimerSettings({ onWorkClick }) {
         {[
           {
             label: "Work",
-            value: "00:45",
+            value: formatTime(workTime),
             color: "#2E7D32",
             onClick: onWorkClick,
           },
-          { label: "Rest", value: "00:30", color: "#C62828" },
+          {
+            label: "Rest",
+            value: formatTime(restTime),
+            color: "#C62828",
+            onClick: onRestClick,
+          },
           { label: "Exercises", value: "7", color: "#757575" },
           { label: "Rounds", value: "3X", color: "#1565C0" },
-          { label: "Round Reset", value: "01:00", color: "#FFB300" },
+          {
+            label: "Round Reset",
+            value: formatTime(roundResetTime), // ✅ Dynamically updated
+            color: "#FFB300",
+            onClick: onRoundResetClick, // ✅ Now opens the modal
+          },
         ].map((item, index) => (
           <Box
             key={index}

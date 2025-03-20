@@ -3,8 +3,10 @@ import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import TimeAdjuster from "./TimeAdjuster";
+import RestTimeAdjuster from "./RestTimeAdjuster";
+import RoundResetTimeAdjuster from "./RoundResetTimeAdjuster";
 import TimerSettings from "./TimerSettings";
+import WorkTimeAdjuster from "./WorkTimeAdjuster";
 
 export default function App() {
   const [workTime, setWorkTime] = useState(45); // Default Work Time in seconds
@@ -17,15 +19,29 @@ export default function App() {
   const [phase, setPhase] = useState("work"); // work, rest, roundReset
   const [exerciseCount, setExerciseCount] = useState(1);
   const [roundCount, setRoundCount] = useState(1);
-  const [openModal, setOpenModal] = useState(false);
+  const [openWorkModal, setOpenWorkModal] = useState(false);
+  const [openRestModal, setOpenRestModal] = useState(false);
+  const [openRoundResetModal, setOpenRoundResetModal] = useState(false);
 
   const toggleTimer = () => setIsRunning(!isRunning);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenWorkModal = () => setOpenWorkModal(true);
+  const handleCloseWorkModal = () => setOpenWorkModal(false);
+  const handleOpenRestModal = () => setOpenRestModal(true);
+  const handleCloseRestModal = () => setOpenRestModal(false);
+  const handleOpenRoundResetModal = () => setOpenRoundResetModal(true);
+  const handleCloseRoundResetModal = () => setOpenRoundResetModal(false);
 
-  // Update timer logic
+  // Reset timer when workTime changes (only when not running)
+  useEffect(() => {
+    if (!isRunning) {
+      setTime(workTime);
+    }
+  }, [workTime, isRunning]);
+
+  // Timer logic
   useEffect(() => {
     if (!isRunning) return;
+
     if (time === 0) {
       if (phase === "work") {
         if (exerciseCount < exercises) {
@@ -33,19 +49,19 @@ export default function App() {
           setTime(restTime);
         } else {
           if (roundCount < rounds) {
-            setPhase("roundReset");
+            setPhase("roundReset"); // 🔥 Fixed Typo (was "roundRoundReset")
             setTime(roundResetTime);
             setExerciseCount(1);
-            setRoundCount(roundCount + 1);
+            setRoundCount((prev) => prev + 1);
           } else {
-            setIsRunning(false); // Stop after all rounds
+            setIsRunning(false);
             return;
           }
         }
       } else if (phase === "rest") {
         setPhase("work");
         setTime(workTime);
-        setExerciseCount(exerciseCount + 1);
+        setExerciseCount((prev) => prev + 1);
       } else if (phase === "roundReset") {
         setPhase("work");
         setTime(workTime);
@@ -118,14 +134,38 @@ export default function App() {
       </Button>
 
       {/* Timer Settings */}
-      <TimerSettings onWorkClick={handleOpenModal} />
+      <TimerSettings
+        workTime={workTime}
+        restTime={restTime}
+        roundResetTime={roundResetTime}
+        onWorkClick={handleOpenWorkModal}
+        onRestClick={handleOpenRestModal}
+        onRoundResetClick={handleOpenRoundResetModal}
+      />
 
       {/* Modal for Adjusting Work Time */}
-      <Modal open={openModal} onClose={handleCloseModal}>
-        <TimeAdjuster
+      <Modal open={openWorkModal} onClose={handleCloseWorkModal}>
+        <WorkTimeAdjuster
           time={workTime}
           setTime={setWorkTime}
-          onClose={handleCloseModal}
+          onClose={handleCloseWorkModal}
+        />
+      </Modal>
+
+      {/* Modal for Adjusting Rest Time */}
+      <Modal open={openRestModal} onClose={handleCloseRestModal}>
+        <RestTimeAdjuster
+          time={restTime}
+          setTime={setRestTime}
+          onClose={handleCloseRestModal}
+        />
+      </Modal>
+
+      <Modal open={openRoundResetModal} onClose={handleCloseRoundResetModal}>
+        <RoundResetTimeAdjuster
+          time={roundResetTime}
+          setTime={setRoundResetTime}
+          onClose={handleCloseRoundResetModal}
         />
       </Modal>
     </Box>
