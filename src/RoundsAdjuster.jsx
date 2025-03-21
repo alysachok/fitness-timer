@@ -1,22 +1,18 @@
 import { Box, Button, Slider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function ExercisesAdjuster({
-  exercises,
-  setExercises,
-  onClose,
-}) {
-  const [tempExercises, setTempExercises] = useState(exercises);
+export default function RoundsAdjuster({ rounds, setRounds, onClose }) {
+  const [tempRounds, setTempRounds] = useState(rounds);
 
-  // Sync `tempExercises` when modal opens
+  // Sync `tempRounds` when modal opens
   useEffect(() => {
-    if (typeof exercises === "number" && !isNaN(exercises)) {
-      setTempExercises(exercises);
+    if (typeof rounds === "number" && !isNaN(rounds)) {
+      setTempRounds(rounds);
     }
-  }, [exercises]);
+  }, [rounds]);
 
   const handleSave = () => {
-    setExercises(tempExercises); // ✅ Save new exercises count
+    setRounds(tempRounds); // ✅ Save new rounds count
     onClose(); // ✅ Close modal
   };
 
@@ -27,7 +23,7 @@ export default function ExercisesAdjuster({
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        background: "#757575",
+        background: "#1565C0", // Blue for rounds
         padding: "20px",
         borderRadius: "10px",
         width: "90%",
@@ -37,21 +33,21 @@ export default function ExercisesAdjuster({
       }}
     >
       <Typography variant="h6" sx={{ mb: 2, color: "#fff" }}>
-        Adjust Exercises Count
+        Adjust Rounds Count
       </Typography>
 
       <Typography
         variant="h2"
         sx={{ fontWeight: "bold", mb: 2, color: "#fff" }}
       >
-        {tempExercises}
+        {tempRounds}
       </Typography>
 
       <Slider
-        value={tempExercises}
-        onChange={(e, newValue) => setTempExercises(newValue)}
+        value={tempRounds}
+        onChange={(e, newValue) => setTempRounds(newValue)}
         min={1}
-        max={20}
+        max={10}
         step={1}
         valueLabelDisplay="auto"
         sx={{

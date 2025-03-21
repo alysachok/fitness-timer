@@ -1,12 +1,16 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 export default function TimerSettings({
   workTime,
   restTime,
-  roundResetTime, // ✅ Added
+  roundResetTime,
+  exercises,
+  rounds,
   onWorkClick,
   onRestClick,
-  onRoundResetClick, // ✅ Added
+  onRoundResetClick,
+  onExercisesClick,
+  onRoundsClick,
 }) {
   // Convert seconds to MM:SS format
   const formatTime = (seconds) => {
@@ -27,10 +31,6 @@ export default function TimerSettings({
         textAlign: "center",
       }}
     >
-      <Button sx={{ width: "100%", color: "#fff", mb: 1 }}>
-        Load Previous Workout
-      </Button>
-
       <Stack spacing={1}>
         {[
           {
@@ -45,13 +45,23 @@ export default function TimerSettings({
             color: "#C62828",
             onClick: onRestClick,
           },
-          { label: "Exercises", value: "7", color: "#757575" },
-          { label: "Rounds", value: "3X", color: "#1565C0" },
+          {
+            label: "Exercises",
+            value: exercises,
+            color: "#757575",
+            onClick: onExercisesClick,
+          },
+          {
+            label: "Rounds",
+            value: rounds,
+            color: "#1565C0",
+            onClick: onRoundsClick,
+          },
           {
             label: "Round Reset",
-            value: formatTime(roundResetTime), // ✅ Dynamically updated
+            value: formatTime(roundResetTime),
             color: "#FFB300",
-            onClick: onRoundResetClick, // ✅ Now opens the modal
+            onClick: onRoundResetClick,
           },
         ].map((item, index) => (
           <Box
