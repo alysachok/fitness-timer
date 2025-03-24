@@ -3,6 +3,7 @@ import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import "./App.css";
 import CircularTimer from "./CircularTimer";
 import ExercisesAdjuster from "./ExercisesAdjuster";
 import RestTimeAdjuster from "./RestTimeAdjuster";
@@ -50,6 +51,59 @@ export default function App() {
     }
   }, [workTime, isRunning]);
 
+  // useEffect(() => {
+  //   if (!isRunning) return;
+
+  //   const interval = setInterval(() => {
+  //     setTime((prevTime) => {
+  //       if (prevTime === 1) {
+  //         if (phase === "work") {
+  //           if (exerciseCount < exercises) {
+  //             // Transition to Rest Phase
+  //             setPhase("rest");
+  //             return restTime;
+  //           } else {
+  //             if (roundCount < rounds) {
+  //               // All exercises completed in this round → Start Round Reset Timer
+  //               setPhase("roundReset");
+  //               setExerciseCount(1);
+  //               setRoundCount((prev) => prev + 1);
+  //               return roundResetTime;
+  //             } else {
+  //               // All rounds completed → Stop Timer
+  //               setIsRunning(false);
+  //               return 0;
+  //             }
+  //           }
+  //         } else if (phase === "rest") {
+  //           // Transition back to Work Phase
+  //           setPhase("work");
+  //           setExerciseCount((prev) => prev + 1);
+  //           return workTime;
+  //         } else if (phase === "roundReset") {
+  //           // Start next round's Work Timer
+  //           setPhase("work");
+  //           return workTime;
+  //         }
+  //       }
+  //       return prevTime - 1; // Countdown
+  //     });
+  //   }, 1000);
+
+  //   return () => clearInterval(interval);
+  // }, [
+  //   isRunning,
+  //   time,
+  //   phase,
+  //   exerciseCount,
+  //   roundCount,
+  //   workTime,
+  //   restTime,
+  //   roundResetTime,
+  //   exercises,
+  //   rounds,
+  // ]);
+
   useEffect(() => {
     if (!isRunning) return;
 
@@ -58,34 +112,42 @@ export default function App() {
         if (prevTime === 1) {
           if (phase === "work") {
             if (exerciseCount < exercises) {
-              // Transition to Rest Phase
+              // 🔹 Transition to Rest Phase
               setPhase("rest");
               return restTime;
             } else {
               if (roundCount < rounds) {
-                // All exercises completed in this round → Start Round Reset Timer
+                // 🔹 All exercises in round completed → Start Round Reset Timer
                 setPhase("roundReset");
-                setExerciseCount(1);
-                setRoundCount((prev) => prev + 1);
                 return roundResetTime;
               } else {
-                // All rounds completed → Stop Timer
+                // 🔹 All rounds completed → Stop Timer
                 setIsRunning(false);
                 return 0;
               }
             }
           } else if (phase === "rest") {
-            // Transition back to Work Phase
-            setPhase("work");
-            setExerciseCount((prev) => prev + 1);
-            return workTime;
+            if (exerciseCount < exercises) {
+              // 🔹 Transition back to Work Phase, increase exercise count
+              setPhase("work");
+              setExerciseCount((prev) => prev + 1);
+              return workTime;
+            }
           } else if (phase === "roundReset") {
-            // Start next round's Work Timer
-            setPhase("work");
-            return workTime;
+            if (roundCount < rounds) {
+              // 🔹 Start new round, reset exercise count
+              setPhase("work");
+              setExerciseCount(1);
+              setRoundCount((prev) => prev + 1);
+              return workTime;
+            } else {
+              // 🔹 All rounds completed → Stop Timer
+              setIsRunning(false);
+              return 0;
+            }
           }
         }
-        return prevTime - 1; // Countdown
+        return prevTime - 1; // 🔹 Countdown continues
       });
     }, 1000);
 

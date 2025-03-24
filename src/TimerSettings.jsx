@@ -23,7 +23,7 @@ export default function TimerSettings({
     <Box
       sx={{
         mt: 3,
-        background: "#222",
+        background: "rgba(34, 34, 34, 0.6)",
         width: "90%",
         borderRadius: "15px",
         padding: "10px",
@@ -36,13 +36,13 @@ export default function TimerSettings({
           {
             label: "Work",
             value: formatTime(workTime),
-            color: "#2E7D32",
+            color: "#27AE60",
             onClick: onWorkClick,
           },
           {
             label: "Rest",
             value: formatTime(restTime),
-            color: "#C62828",
+            color: "#E74C3C",
             onClick: onRestClick,
           },
           {
@@ -54,13 +54,13 @@ export default function TimerSettings({
           {
             label: "Rounds",
             value: rounds,
-            color: "#1565C0",
+            color: "#70B7BA",
             onClick: onRoundsClick,
           },
           {
             label: "Round Reset",
             value: formatTime(roundResetTime),
-            color: "#FFB300",
+            color: "#FF9900",
             onClick: onRoundResetClick,
           },
         ].map((item, index) => (
