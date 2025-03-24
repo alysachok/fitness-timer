@@ -1,3 +1,8 @@
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import ReplayCircleFilledIcon from "@mui/icons-material/ReplayCircleFilled";
 import { Box, Stack, Typography } from "@mui/material";
 
 export default function TimerSettings({
@@ -34,33 +39,43 @@ export default function TimerSettings({
       <Stack spacing={1}>
         {[
           {
+            icon: <PlayCircleOutlineIcon />,
             label: "Work",
             value: formatTime(workTime),
-            color: "#27AE60",
+            color: "linear-gradient(to right,#27AE60,  #A9CF54)",
+            // color: "#27AE60",
             onClick: onWorkClick,
           },
           {
+            icon: <PauseCircleIcon />,
             label: "Rest",
             value: formatTime(restTime),
-            color: "#E74C3C",
+            // color: "#E74C3C",
+            color: "linear-gradient(to right, #F1433F,  #f795ab)",
             onClick: onRestClick,
           },
           {
+            icon: <FitnessCenterIcon />,
             label: "Exercises",
             value: exercises,
-            color: "#757575",
+            // color: "#757575",
+            color: "linear-gradient(to right, #757575,  #C1BFB5)",
             onClick: onExercisesClick,
           },
           {
+            icon: <ReplayCircleFilledIcon />,
             label: "Rounds",
             value: rounds,
-            color: "#70B7BA",
+            color: "linear-gradient(to right, #70B7BA,  #ADC7D7)",
+            // color: "#70B7BA",
             onClick: onRoundsClick,
           },
           {
+            icon: <AccessTimeIcon />,
             label: "Round Reset",
             value: formatTime(roundResetTime),
-            color: "#FF9900",
+            color: "linear-gradient(to right, #FFB300,  #EBD773)",
+            // color: "#FFB300",
             onClick: onRoundResetClick,
           },
         ].map((item, index) => (
@@ -76,7 +91,11 @@ export default function TimerSettings({
             }}
             onClick={item.onClick || null}
           >
-            <Typography>{item.label}</Typography>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              {item.icon}
+              <Typography>{item.label}</Typography>
+            </Stack>
+
             <Typography>{item.value}</Typography>
           </Box>
         ))}

@@ -23,7 +23,7 @@ export default function RestTimeAdjuster({ time, setTime, onClose }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        background: "#4CAF50",
+        background: "#E74C3C",
         padding: "20px",
         borderRadius: "10px",
         width: "90%",
