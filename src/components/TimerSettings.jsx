@@ -1,8 +1,8 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import PauseCircleOutlinedIcon from "@mui/icons-material/PauseCircleOutlined";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import ReplayCircleFilledIcon from "@mui/icons-material/ReplayCircleFilled";
+import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
+import RunCircleOutlinedIcon from "@mui/icons-material/RunCircleOutlined";
 import { Box, Stack, Typography } from "@mui/material";
 
 export default function TimerSettings({
@@ -47,7 +47,7 @@ export default function TimerSettings({
             onClick: onWorkClick,
           },
           {
-            icon: <PauseCircleIcon />,
+            icon: <PauseCircleOutlinedIcon />,
             label: "Rest",
             value: formatTime(restTime),
             // color: "#E74C3C",
@@ -55,7 +55,7 @@ export default function TimerSettings({
             onClick: onRestClick,
           },
           {
-            icon: <FitnessCenterIcon />,
+            icon: <RunCircleOutlinedIcon />,
             label: "Exercises",
             value: exercises,
             // color: "#757575",
@@ -63,7 +63,7 @@ export default function TimerSettings({
             onClick: onExercisesClick,
           },
           {
-            icon: <ReplayCircleFilledIcon />,
+            icon: <ReplayOutlinedIcon />,
             label: "Rounds",
             value: rounds,
             color: "linear-gradient(to right, #70B7BA,  #ADC7D7)",
@@ -96,7 +96,9 @@ export default function TimerSettings({
               <Typography>{item.label}</Typography>
             </Stack>
 
-            <Typography>{item.value}</Typography>
+            <Typography color="#051937" fontWeight="bold">
+              {item.value}
+            </Typography>
           </Box>
         ))}
       </Stack>

@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Box, Button, Slider, Typography } from "@mui/material";
+import { useState } from "react";
 
 export default function WorkTimeAdjuster({ time, setTime, onClose }) {
   const [tempTime, setTempTime] = useState(time); // Local state for previewing changes
@@ -16,7 +16,7 @@ export default function WorkTimeAdjuster({ time, setTime, onClose }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        background: "#4CAF50",
+        background: "linear-gradient(to right, #70B7BA, #A9CF54)",
         padding: "20px",
         borderRadius: "10px",
         width: "90%",

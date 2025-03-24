@@ -1,8 +1,8 @@
-export default function CircularTimer({ duration, timeLeft, phase }) {
-  const radius = 50; // Circle radius
-  const strokeWidth = 6; // Border thickness
-  const circumference = 2 * Math.PI * radius; // Full circle length
-  const progress = (timeLeft / duration) * circumference; // Dynamic progress
+export default function CircularTimer({ duration, timeLeft, label }) {
+  const radius = 50;
+  const strokeWidth = 6;
+  const circumference = 2 * Math.PI * radius;
+  const progress = (timeLeft / duration) * circumference;
 
   return (
     <svg width="20rem" height="20rem" viewBox="0 0 120 120">
@@ -16,34 +16,36 @@ export default function CircularTimer({ duration, timeLeft, phase }) {
         fill="none"
       />
 
-      {/* Dynamic Progress Circle */}
+      {/* Progress Circle */}
       <circle
         cx="60"
         cy="60"
         r={radius}
         stroke={
-          phase === "work"
-            ? "#27AE60" // Green for Work
-            : phase === "rest"
-            ? "#E74C3C" // Red for Rest
-            : "#FF9900" // Orange for Round Reset
+          label.toLowerCase().includes("work")
+            ? "#27AE60" // Green
+            : label.toLowerCase().includes("rest") &&
+              !label.toLowerCase().includes("round")
+            ? "#E74C3C" // Red
+            : "#FFA000"
+          // : "#FF9900" // Yellow/Orange for Round Reset
         }
         strokeWidth={strokeWidth}
         fill="none"
         strokeDasharray={circumference}
-        strokeDashoffset={circumference - progress} // Progress effect
+        strokeDashoffset={circumference - progress}
         strokeLinecap="round"
-        transform="rotate(-90 60 60)" // Start from top
+        transform="rotate(-90 60 60)"
       />
 
-      {/* Timer Text */}
+      {/* Time */}
       <text x="60" y="55" fontSize="24" textAnchor="middle" fill="#fff">
         {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
       </text>
 
-      {/* Phase Text */}
+      {/* Label (Phase) */}
       <text x="60" y="75" fontSize="12" textAnchor="middle" fill="#fff">
-        {phase.toUpperCase()}
+        {label}
       </text>
     </svg>
   );

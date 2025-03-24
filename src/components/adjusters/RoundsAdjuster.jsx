@@ -23,7 +23,7 @@ export default function RoundsAdjuster({ rounds, setRounds, onClose }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        background: "#70B7BA", // Blue for rounds
+        background: "linear-gradient(to right, #00C9FF, #92FE9D)",
         padding: "20px",
         borderRadius: "10px",
         width: "90%",

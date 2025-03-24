@@ -27,7 +27,7 @@ export default function ExercisesAdjuster({
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        background: "#757575",
+        background: "linear-gradient(to bottom, #bdc3c7, #2c3e50)",
         padding: "20px",
         borderRadius: "10px",
         width: "90%",

@@ -1,4 +1,3 @@
-import MenuIcon from "@mui/icons-material/Menu";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Button, Modal, Typography } from "@mui/material";
@@ -11,13 +10,16 @@ import RestTimeAdjuster from "./components/adjusters/RestTimeAdjuster";
 import RoundResetTimeAdjuster from "./components/adjusters/RoundResetTimeAdjuster";
 import RoundsAdjuster from "./components/adjusters/RoundsAdjuster";
 import WorkTimeAdjuster from "./components/adjusters/WorkTimeAdjuster";
+import { getBackgroundColor } from "./utils/backgroundColor";
+import { formatPhaseName } from "./utils/formatPhaseName";
+import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
 
 export default function App() {
-  const [workTime, setWorkTime] = useState(45);
-  const [restTime, setRestTime] = useState(30);
-  const [roundResetTime, setRoundResetTime] = useState(60);
-  const [exercises, setExercises] = useState(7);
-  const [rounds, setRounds] = useState(3);
+  const [workTime, setWorkTime] = useState(2);
+  const [restTime, setRestTime] = useState(2);
+  const [roundResetTime, setRoundResetTime] = useState(2);
+  const [exercises, setExercises] = useState(2);
+  const [rounds, setRounds] = useState(2);
   const [time, setTime] = useState(workTime);
   const [isRunning, setIsRunning] = useState(false);
   const [phase, setPhase] = useState("work");
@@ -51,59 +53,6 @@ export default function App() {
     }
   }, [workTime, isRunning]);
 
-  // useEffect(() => {
-  //   if (!isRunning) return;
-
-  //   const interval = setInterval(() => {
-  //     setTime((prevTime) => {
-  //       if (prevTime === 1) {
-  //         if (phase === "work") {
-  //           if (exerciseCount < exercises) {
-  //             // Transition to Rest Phase
-  //             setPhase("rest");
-  //             return restTime;
-  //           } else {
-  //             if (roundCount < rounds) {
-  //               // All exercises completed in this round → Start Round Reset Timer
-  //               setPhase("roundReset");
-  //               setExerciseCount(1);
-  //               setRoundCount((prev) => prev + 1);
-  //               return roundResetTime;
-  //             } else {
-  //               // All rounds completed → Stop Timer
-  //               setIsRunning(false);
-  //               return 0;
-  //             }
-  //           }
-  //         } else if (phase === "rest") {
-  //           // Transition back to Work Phase
-  //           setPhase("work");
-  //           setExerciseCount((prev) => prev + 1);
-  //           return workTime;
-  //         } else if (phase === "roundReset") {
-  //           // Start next round's Work Timer
-  //           setPhase("work");
-  //           return workTime;
-  //         }
-  //       }
-  //       return prevTime - 1; // Countdown
-  //     });
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [
-  //   isRunning,
-  //   time,
-  //   phase,
-  //   exerciseCount,
-  //   roundCount,
-  //   workTime,
-  //   restTime,
-  //   roundResetTime,
-  //   exercises,
-  //   rounds,
-  // ]);
-
   useEffect(() => {
     if (!isRunning) return;
 
@@ -112,42 +61,33 @@ export default function App() {
         if (prevTime === 1) {
           if (phase === "work") {
             if (exerciseCount < exercises) {
-              // 🔹 Transition to Rest Phase
               setPhase("rest");
               return restTime;
             } else {
-              if (roundCount < rounds) {
-                // 🔹 All exercises in round completed → Start Round Reset Timer
-                setPhase("roundReset");
-                return roundResetTime;
-              } else {
-                // 🔹 All rounds completed → Stop Timer
-                setIsRunning(false);
-                return 0;
-              }
+              setPhase("roundReset");
+              return roundResetTime;
             }
           } else if (phase === "rest") {
-            if (exerciseCount < exercises) {
-              // 🔹 Transition back to Work Phase, increase exercise count
-              setPhase("work");
-              setExerciseCount((prev) => prev + 1);
-              return workTime;
-            }
+            setPhase("work");
+            setExerciseCount(exerciseCount + 1);
+            return workTime;
           } else if (phase === "roundReset") {
             if (roundCount < rounds) {
-              // 🔹 Start new round, reset exercise count
+              setRoundCount(roundCount + 1);
+              setExerciseCount(1); // reset to 1 for new round
               setPhase("work");
-              setExerciseCount(1);
-              setRoundCount((prev) => prev + 1);
               return workTime;
             } else {
-              // 🔹 All rounds completed → Stop Timer
               setIsRunning(false);
-              return 0;
+              setExerciseCount(1);
+              setRoundCount(1);
+              setPhase("work");
+              return workTime;
             }
           }
         }
-        return prevTime - 1; // 🔹 Countdown continues
+
+        return prevTime - 1;
       });
     }, 1000);
 
@@ -165,62 +105,46 @@ export default function App() {
     rounds,
   ]);
 
-  const getBackgroundColor = () => {
-    switch (phase) {
-      case "work":
-        return "linear-gradient(to right, #70B7BA, #A9CF54)";
-      case "rest":
-        return "linear-gradient(to right,   #f795ab, #F1433F)";
-      case "roundReset":
-        return "linear-gradient(to right, #F6FF92, #FFCC00)";
-      default:
-        return "linear-gradient(to bottom, #ff5f6d, #ff7a5a)";
-    }
-  };
-
   return (
     <Box
       sx={{
         width: "100vw",
-        height: "100vh",
-        background: getBackgroundColor(),
+        minHeight: "100vh",
+        background: getBackgroundColor(phase),
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         justifyContent: "center",
+        alignItems: "center",
         color: "#fff",
-        fontFamily: "Arial, sans-serif",
+        overflow: "hidden",
+        margin: "0",
+        // fontFamily: "Arial, sans-serif",
+        fontFamily: "Rajdhani, sans-serif",
         transition: "background 0.5s ease",
       }}
     >
-      <Box sx={{ position: "absolute", top: 20, left: 20 }}>
-        <MenuIcon sx={{ fontSize: 30 }} />
-      </Box>
-
-      <Typography
-        // variant="h1"
-        sx={{
-          fontWeight: "bold",
-          fontSize: "10rem",
-          textShadow: "2px 2px 10px rgba(0,0,0,0.2)",
-        }}
-      >
-        <CircularTimer duration={workTime} timeLeft={time} phase={phase} />
-
-        {/* {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")} */}
-      </Typography>
-
+      <CircularTimer
+        duration={
+          phase === "work"
+            ? workTime
+            : phase === "rest"
+            ? restTime
+            : roundResetTime
+        }
+        timeLeft={time}
+        phase={phase}
+        label={formatPhaseName(phase)} // 👈 Add this
+      />
       <Button
         sx={{
-          mt: 2,
           background: "radial-gradient(circle, #3D4C53, #333)",
           borderRadius: "50%",
-          width: 80,
-          height: 80,
+          width: 60,
+          height: 60,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 0 15px rgba(0,0,0,0.3)", // Soft glow
+          boxShadow: "0 0 15px rgba(0,0,0,0.3)",
           "&:hover": {
             background: "radial-gradient(circle, #3D4C53, #000)",
           },
@@ -234,21 +158,44 @@ export default function App() {
         )}
       </Button>
 
-      {!isRunning && (
-        <TimerSettings
-          workTime={workTime}
-          restTime={restTime}
-          roundResetTime={roundResetTime}
-          rounds={rounds}
-          onWorkClick={handleOpenWorkModal}
-          onRestClick={handleOpenRestModal}
-          onRoundResetClick={handleOpenRoundResetModal}
-          exercises={exercises}
-          onExercisesClick={handleOpenExercisesAdjusterModal}
-          onRoundsClick={handleOpenRoundsAdjusterModal}
-        />
+      {isRunning && (
+        <>
+          <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mt: 1 }}>
+            Exercise {exerciseCount} of {exercises}
+          </Typography>
+          <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mt: 1 }}>
+            Round {roundCount} of {rounds}
+          </Typography>
+        </>
       )}
 
+      {!isRunning && (
+        <>
+          <Typography sx={{ fontSize: "1.5rem", fontWeight: "bold", mt: 1 }}>
+            Total Workout Time:{" "}
+            {getTotalWorkoutTime({
+              workTime,
+              restTime,
+              roundResetTime,
+              exercises,
+              rounds,
+            })}
+          </Typography>
+          <TimerSettings
+            workTime={workTime}
+            restTime={restTime}
+            roundResetTime={roundResetTime}
+            rounds={rounds}
+            onWorkClick={handleOpenWorkModal}
+            onRestClick={handleOpenRestModal}
+            onRoundResetClick={handleOpenRoundResetModal}
+            exercises={exercises}
+            onExercisesClick={handleOpenExercisesAdjusterModal}
+            onRoundsClick={handleOpenRoundsAdjusterModal}
+          />
+        </>
+      )}
+      {/* Modals */}
       <Modal open={openWorkModal} onClose={handleCloseWorkModal}>
         <WorkTimeAdjuster
           time={workTime}
@@ -256,7 +203,6 @@ export default function App() {
           onClose={handleCloseWorkModal}
         />
       </Modal>
-
       <Modal open={openRestModal} onClose={handleCloseRestModal}>
         <RestTimeAdjuster
           time={restTime}
@@ -264,7 +210,6 @@ export default function App() {
           onClose={handleCloseRestModal}
         />
       </Modal>
-
       <Modal open={openRoundResetModal} onClose={handleCloseRoundResetModal}>
         <RoundResetTimeAdjuster
           time={roundResetTime}
@@ -282,7 +227,6 @@ export default function App() {
           onClose={handleCloseRoundsAdjusterModal}
         />
       </Modal>
-
       <Modal
         open={openExercisesAdjusterModal}
         onClose={handleCloseExercisesAdjusterModal}
