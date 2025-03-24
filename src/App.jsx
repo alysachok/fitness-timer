@@ -70,9 +70,6 @@ export default function App() {
   const [openExercisesAdjusterModal, setOpenExercisesAdjusterModal] =
     useState(false);
   const [openRoundsAdjusterModal, setOpenRoundsAdjusterModal] = useState(false);
-
-  // Toggle Start/Pause
-  const toggleTimer = () => setIsRunning(!isRunning);
   const handleOpenWorkModal = () => setOpenWorkModal(true);
   const handleCloseWorkModal = () => setOpenWorkModal(false);
   const handleOpenRestModal = () => setOpenRestModal(true);
@@ -86,6 +83,9 @@ export default function App() {
   const handleOpenRoundsAdjusterModal = () => setOpenRoundsAdjusterModal(true);
   const handleCloseRoundsAdjusterModal = () =>
     setOpenRoundsAdjusterModal(false);
+
+  // Toggle Start/Pause
+  const toggleTimer = () => setIsRunning(!isRunning);
 
   // Reset timer to work time if not running
   useEffect(() => {
@@ -149,6 +149,11 @@ export default function App() {
 
   return (
     <Box sx={styles.container(phase)}>
+      {isRunning && (
+        <Typography sx={styles.titleText}>
+          Exercise {exerciseCount} of {exercises}
+        </Typography>
+      )}
       <CircularTimer
         duration={
           phase === "work"
@@ -161,6 +166,7 @@ export default function App() {
         phase={phase}
         label={formatPhaseName(phase)}
       />
+
       <Button sx={styles.button} onClick={toggleTimer}>
         {isRunning ? (
           <PauseIcon sx={{ color: "#fff", fontSize: 50 }} />
@@ -169,15 +175,20 @@ export default function App() {
         )}
       </Button>
 
-      {isRunning && (
-        <>
+      {/* {isRunning && (
+      
           <Typography sx={styles.titleText}>
             Exercise {exerciseCount} of {exercises}
           </Typography>
           <Typography sx={styles.titleText}>
             Round {roundCount} of {rounds}
           </Typography>
-        </>
+       
+      )} */}
+      {isRunning && (
+        <Typography sx={styles.titleText}>
+          Round {roundCount} of {rounds}
+        </Typography>
       )}
 
       {!isRunning && (

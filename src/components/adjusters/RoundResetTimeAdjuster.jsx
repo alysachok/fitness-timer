@@ -13,7 +13,7 @@ export default function RoundResetTimeAdjuster({ time, setTime, onClose }) {
 
   const handleSave = () => {
     setTime(tempTime); // Update round reset timer with selected time
-    onClose();
+    onClose(); // Close modal after saving
   };
 
   return (
@@ -23,7 +23,7 @@ export default function RoundResetTimeAdjuster({ time, setTime, onClose }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        background: "linear-gradient(to right,  #EBD773, #FFB300)",
+        background: "linear-gradient(to right, #FFB300,  #EBD773)",
         padding: "20px",
         borderRadius: "10px",
         width: "90%",
