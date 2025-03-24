@@ -36,21 +36,19 @@ export default function TimerSettings({
         textAlign: "center",
       }}
     >
-      <Stack spacing={1}>
+      <Stack spacing={1} fontFamily="Rajdhani, sans-serif">
         {[
           {
             icon: <PlayCircleOutlineIcon />,
             label: "Work",
             value: formatTime(workTime),
             color: "linear-gradient(to right,#27AE60,  #A9CF54)",
-            // color: "#27AE60",
             onClick: onWorkClick,
           },
           {
             icon: <PauseCircleOutlinedIcon />,
             label: "Rest",
             value: formatTime(restTime),
-            // color: "#E74C3C",
             color: "linear-gradient(to right, #F1433F,  #f795ab)",
             onClick: onRestClick,
           },
@@ -58,7 +56,6 @@ export default function TimerSettings({
             icon: <RunCircleOutlinedIcon />,
             label: "Exercises",
             value: exercises,
-            // color: "#757575",
             color: "linear-gradient(to right, #757575,  #C1BFB5)",
             onClick: onExercisesClick,
           },
@@ -67,7 +64,6 @@ export default function TimerSettings({
             label: "Rounds",
             value: rounds,
             color: "linear-gradient(to right, #70B7BA,  #ADC7D7)",
-            // color: "#70B7BA",
             onClick: onRoundsClick,
           },
           {
@@ -75,7 +71,6 @@ export default function TimerSettings({
             label: "Round Reset",
             value: formatTime(roundResetTime),
             color: "linear-gradient(to right, #FFB300,  #EBD773)",
-            // color: "#FFB300",
             onClick: onRoundResetClick,
           },
         ].map((item, index) => (
@@ -93,10 +88,25 @@ export default function TimerSettings({
           >
             <Stack direction="row" alignItems="center" spacing={1}>
               {item.icon}
-              <Typography>{item.label}</Typography>
+              <Typography
+                sx={{
+                  fontFamily: "Rajdhani, sans-serif",
+                  fontWeight: 600,
+                  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.4)",
+                }}
+              >
+                {item.label}
+              </Typography>
             </Stack>
 
-            <Typography color="#051937" fontWeight="bold">
+            <Typography
+              color="#051937"
+              fontWeight="bold"
+              fontFamily="Rajdhani, sans-serif"
+              sx={{
+                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+              }}
+            >
               {item.value}
             </Typography>
           </Box>

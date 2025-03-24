@@ -2,7 +2,7 @@ import { Box, Button, Slider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function RoundResetTimeAdjuster({ time, setTime, onClose }) {
-  const [tempTime, setTempTime] = useState(time || 60); // Ensure tempTime has a valid default (60 sec)
+  const [tempTime, setTempTime] = useState(time || 60);
 
   // Sync tempTime with updated `time` when modal opens
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function RoundResetTimeAdjuster({ time, setTime, onClose }) {
 
   const handleSave = () => {
     setTime(tempTime); // Update round reset timer with selected time
-    onClose(); // Close modal after saving
+    onClose();
   };
 
   return (
@@ -23,7 +23,7 @@ export default function RoundResetTimeAdjuster({ time, setTime, onClose }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        background: "#FFB300", // Changed to yellow to match reset phase
+        background: "linear-gradient(to right,  #EBD773, #FFB300)",
         padding: "20px",
         borderRadius: "10px",
         width: "90%",
@@ -76,7 +76,7 @@ export default function RoundResetTimeAdjuster({ time, setTime, onClose }) {
             color: "#000",
             "&:hover": { background: "#bbb" },
           }}
-          onClick={onClose} // Discard changes and close modal
+          onClick={onClose}
         >
           Cancel
         </Button>

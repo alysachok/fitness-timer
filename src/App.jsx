@@ -14,17 +14,56 @@ import { getBackgroundColor } from "./utils/backgroundColor";
 import { formatPhaseName } from "./utils/formatPhaseName";
 import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
 
+const styles = {
+  container: (phase) => ({
+    width: "100vw",
+    minHeight: "100vh",
+    background: getBackgroundColor(phase),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#fff",
+    overflow: "hidden",
+    margin: 0,
+    fontFamily: "Rajdhani, sans-serif",
+    transition: "background 0.5s ease",
+  }),
+  button: {
+    background: "radial-gradient(circle, #3D4C53, #333)",
+    borderRadius: "50%",
+    width: 60,
+    height: 60,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 0 15px rgba(0,0,0,0.3)",
+    "&:hover": {
+      background: "radial-gradient(circle, #3D4C53, #000)",
+    },
+  },
+  titleText: {
+    fontFamily: "Rajdhani, sans-serif",
+    fontSize: "3rem",
+  },
+};
+
 export default function App() {
+  // Timer Config
   const [workTime, setWorkTime] = useState(2);
   const [restTime, setRestTime] = useState(2);
   const [roundResetTime, setRoundResetTime] = useState(2);
   const [exercises, setExercises] = useState(2);
   const [rounds, setRounds] = useState(2);
+
+  // Timer State
   const [time, setTime] = useState(workTime);
   const [isRunning, setIsRunning] = useState(false);
   const [phase, setPhase] = useState("work");
   const [exerciseCount, setExerciseCount] = useState(1);
   const [roundCount, setRoundCount] = useState(1);
+
+  // Modal Controls
   const [openWorkModal, setOpenWorkModal] = useState(false);
   const [openRestModal, setOpenRestModal] = useState(false);
   const [openRoundResetModal, setOpenRoundResetModal] = useState(false);
@@ -32,6 +71,7 @@ export default function App() {
     useState(false);
   const [openRoundsAdjusterModal, setOpenRoundsAdjusterModal] = useState(false);
 
+  // Toggle Start/Pause
   const toggleTimer = () => setIsRunning(!isRunning);
   const handleOpenWorkModal = () => setOpenWorkModal(true);
   const handleCloseWorkModal = () => setOpenWorkModal(false);
@@ -47,12 +87,14 @@ export default function App() {
   const handleCloseRoundsAdjusterModal = () =>
     setOpenRoundsAdjusterModal(false);
 
+  // Reset timer to work time if not running
   useEffect(() => {
     if (!isRunning) {
       setTime(workTime);
     }
   }, [workTime, isRunning]);
 
+  // Main Timer Logic
   useEffect(() => {
     if (!isRunning) return;
 
@@ -74,7 +116,7 @@ export default function App() {
           } else if (phase === "roundReset") {
             if (roundCount < rounds) {
               setRoundCount(roundCount + 1);
-              setExerciseCount(1); // reset to 1 for new round
+              setExerciseCount(1);
               setPhase("work");
               return workTime;
             } else {
@@ -106,23 +148,7 @@ export default function App() {
   ]);
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        minHeight: "100vh",
-        background: getBackgroundColor(phase),
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "#fff",
-        overflow: "hidden",
-        margin: "0",
-        // fontFamily: "Arial, sans-serif",
-        fontFamily: "Rajdhani, sans-serif",
-        transition: "background 0.5s ease",
-      }}
-    >
+    <Box sx={styles.container(phase)}>
       <CircularTimer
         duration={
           phase === "work"
@@ -133,24 +159,9 @@ export default function App() {
         }
         timeLeft={time}
         phase={phase}
-        label={formatPhaseName(phase)} // 👈 Add this
+        label={formatPhaseName(phase)}
       />
-      <Button
-        sx={{
-          background: "radial-gradient(circle, #3D4C53, #333)",
-          borderRadius: "50%",
-          width: 60,
-          height: 60,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 0 15px rgba(0,0,0,0.3)",
-          "&:hover": {
-            background: "radial-gradient(circle, #3D4C53, #000)",
-          },
-        }}
-        onClick={toggleTimer}
-      >
+      <Button sx={styles.button} onClick={toggleTimer}>
         {isRunning ? (
           <PauseIcon sx={{ color: "#fff", fontSize: 50 }} />
         ) : (
@@ -160,10 +171,10 @@ export default function App() {
 
       {isRunning && (
         <>
-          <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mt: 1 }}>
+          <Typography sx={styles.titleText}>
             Exercise {exerciseCount} of {exercises}
           </Typography>
-          <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mt: 1 }}>
+          <Typography sx={styles.titleText}>
             Round {roundCount} of {rounds}
           </Typography>
         </>
@@ -171,7 +182,7 @@ export default function App() {
 
       {!isRunning && (
         <>
-          <Typography sx={{ fontSize: "1.5rem", fontWeight: "bold", mt: 1 }}>
+          <Typography sx={styles.titleText}>
             Total Workout Time:{" "}
             {getTotalWorkoutTime({
               workTime,
@@ -195,6 +206,7 @@ export default function App() {
           />
         </>
       )}
+
       {/* Modals */}
       <Modal open={openWorkModal} onClose={handleCloseWorkModal}>
         <WorkTimeAdjuster

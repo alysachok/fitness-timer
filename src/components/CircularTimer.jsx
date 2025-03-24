@@ -44,7 +44,14 @@ export default function CircularTimer({ duration, timeLeft, label }) {
       </text>
 
       {/* Label (Phase) */}
-      <text x="60" y="75" fontSize="12" textAnchor="middle" fill="#fff">
+      <text
+        x="60"
+        y="75"
+        fontSize="12"
+        textAnchor="middle"
+        fill="#fff"
+        fontWeight="bold"
+      >
         {label}
       </text>
     </svg>
