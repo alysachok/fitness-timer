@@ -4,13 +4,13 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./App.css";
-import CircularTimer from "./CircularTimer";
-import ExercisesAdjuster from "./ExercisesAdjuster";
-import RestTimeAdjuster from "./RestTimeAdjuster";
-import RoundResetTimeAdjuster from "./RoundResetTimeAdjuster";
-import RoundsAdjuster from "./RoundsAdjuster";
-import TimerSettings from "./TimerSettings";
-import WorkTimeAdjuster from "./WorkTimeAdjuster";
+import CircularTimer from "./components/CircularTimer";
+import TimerSettings from "./components/TimerSettings";
+import ExercisesAdjuster from "./components/adjusters/ExercisesAdjuster";
+import RestTimeAdjuster from "./components/adjusters/RestTimeAdjuster";
+import RoundResetTimeAdjuster from "./components/adjusters/RoundResetTimeAdjuster";
+import RoundsAdjuster from "./components/adjusters/RoundsAdjuster";
+import WorkTimeAdjuster from "./components/adjusters/WorkTimeAdjuster";
 
 export default function App() {
   const [workTime, setWorkTime] = useState(45);
