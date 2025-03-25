@@ -44,7 +44,11 @@ const styles = {
   },
   titleText: {
     fontFamily: "Rajdhani, sans-serif",
-    fontSize: "3rem",
+    fontSize: {
+      xs: "1.6rem", // extra-small screens (phones)
+      sm: "2.4rem", // small screens (tablets)
+      md: "3rem", // medium and up (desktops)
+    },
   },
 };
 
@@ -194,7 +198,7 @@ export default function App() {
       {!isRunning && (
         <>
           <Typography sx={styles.titleText}>
-            Total Workout Time:{" "}
+            Workout Time:{" "}
             {getTotalWorkoutTime({
               workTime,
               restTime,
@@ -203,6 +207,7 @@ export default function App() {
               rounds,
             })}
           </Typography>
+
           <TimerSettings
             workTime={workTime}
             restTime={restTime}
