@@ -50,11 +50,11 @@ const styles = {
 
 export default function App() {
   // Timer Config
-  const [workTime, setWorkTime] = useState(2);
-  const [restTime, setRestTime] = useState(2);
-  const [roundResetTime, setRoundResetTime] = useState(2);
-  const [exercises, setExercises] = useState(2);
-  const [rounds, setRounds] = useState(2);
+  const [workTime, setWorkTime] = useState(45);
+  const [restTime, setRestTime] = useState(30);
+  const [roundResetTime, setRoundResetTime] = useState(60);
+  const [exercises, setExercises] = useState(7);
+  const [rounds, setRounds] = useState(3);
 
   // Timer State
   const [time, setTime] = useState(workTime);
