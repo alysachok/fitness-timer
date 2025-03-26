@@ -13,6 +13,7 @@ import WorkTimeAdjuster from "./components/adjusters/WorkTimeAdjuster";
 import { getBackgroundColor } from "./utils/backgroundColor";
 import { formatPhaseName } from "./utils/formatPhaseName";
 import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
+import useWakeLock from "./hooks/useWakeLock";
 
 const styles = {
   container: (phase) => ({
@@ -90,6 +91,8 @@ export default function App() {
 
   // Toggle Start/Pause
   const toggleTimer = () => setIsRunning(!isRunning);
+
+  useWakeLock(isRunning);
 
   // Reset timer to work time if not running
   useEffect(() => {
