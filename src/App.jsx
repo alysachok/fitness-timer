@@ -10,10 +10,10 @@ import RestTimeAdjuster from "./components/adjusters/RestTimeAdjuster";
 import RoundResetTimeAdjuster from "./components/adjusters/RoundResetTimeAdjuster";
 import RoundsAdjuster from "./components/adjusters/RoundsAdjuster";
 import WorkTimeAdjuster from "./components/adjusters/WorkTimeAdjuster";
+import useWakeLock from "./hooks/useWakeLock";
 import { getBackgroundColor } from "./utils/backgroundColor";
 import { formatPhaseName } from "./utils/formatPhaseName";
 import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
-import useWakeLock from "./hooks/useWakeLock";
 
 const styles = {
   container: (phase) => ({
@@ -89,8 +89,11 @@ export default function App() {
   const handleCloseRoundsAdjusterModal = () =>
     setOpenRoundsAdjusterModal(false);
 
-  // Toggle Start/Pause
-  const toggleTimer = () => setIsRunning(!isRunning);
+  // // Toggle Start/Pause
+  // const toggleTimer = () => setIsRunning(!isRunning);
+  const toggleTimer = () => {
+    setIsRunning(!isRunning);
+  };
 
   useWakeLock(isRunning);
 
