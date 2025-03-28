@@ -10,9 +10,11 @@ import RestTimeAdjuster from "./components/adjusters/RestTimeAdjuster";
 import RoundResetTimeAdjuster from "./components/adjusters/RoundResetTimeAdjuster";
 import RoundsAdjuster from "./components/adjusters/RoundsAdjuster";
 import WorkTimeAdjuster from "./components/adjusters/WorkTimeAdjuster";
+import useWakeLock from "./hooks/useWakeLock";
 import { getBackgroundColor } from "./utils/backgroundColor";
 import { formatPhaseName } from "./utils/formatPhaseName";
 import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
+const beep = new Audio(import.meta.env.BASE_URL + "beep.wav");
 
 const styles = {
   container: (phase) => ({
@@ -89,7 +91,11 @@ export default function App() {
     setOpenRoundsAdjusterModal(false);
 
   // Toggle Start/Pause
-  const toggleTimer = () => setIsRunning(!isRunning);
+  const toggleTimer = () => {
+    setIsRunning(!isRunning);
+  };
+
+  useWakeLock(isRunning);
 
   // Reset timer to work time if not running
   useEffect(() => {
@@ -104,6 +110,13 @@ export default function App() {
 
     const interval = setInterval(() => {
       setTime((prevTime) => {
+        // 🔔 Play sound in the last 5 seconds
+        if (prevTime <= 4 && prevTime > 1) {
+          beep.play().catch((e) => {
+            // Handle autoplay policy restrictions if any
+            console.warn("Audio play failed:", e);
+          });
+        }
         if (prevTime === 1) {
           if (phase === "work") {
             if (exerciseCount < exercises) {
