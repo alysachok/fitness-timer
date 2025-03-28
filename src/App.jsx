@@ -14,6 +14,7 @@ import useWakeLock from "./hooks/useWakeLock";
 import { getBackgroundColor } from "./utils/backgroundColor";
 import { formatPhaseName } from "./utils/formatPhaseName";
 import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
+const beep = new Audio(import.meta.env.BASE_URL + "beep.wav");
 
 const styles = {
   container: (phase) => ({
@@ -89,8 +90,7 @@ export default function App() {
   const handleCloseRoundsAdjusterModal = () =>
     setOpenRoundsAdjusterModal(false);
 
-  // // Toggle Start/Pause
-  // const toggleTimer = () => setIsRunning(!isRunning);
+  // Toggle Start/Pause
   const toggleTimer = () => {
     setIsRunning(!isRunning);
   };
@@ -110,6 +110,13 @@ export default function App() {
 
     const interval = setInterval(() => {
       setTime((prevTime) => {
+        // 🔔 Play sound in the last 5 seconds
+        if (prevTime <= 4 && prevTime > 1) {
+          beep.play().catch((e) => {
+            // Handle autoplay policy restrictions if any
+            console.warn("Audio play failed:", e);
+          });
+        }
         if (prevTime === 1) {
           if (phase === "work") {
             if (exerciseCount < exercises) {
