@@ -14,7 +14,7 @@ import useWakeLock from "./hooks/useWakeLock";
 import { getBackgroundColor } from "./utils/backgroundColor";
 import { formatPhaseName } from "./utils/formatPhaseName";
 import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
-const beep = new Audio(import.meta.env.BASE_URL + "beep.wav");
+const beep = new Audio(`${import.meta.env.BASE_URL}beep.wav`);
 
 const styles = {
   container: (phase) => ({
@@ -110,7 +110,7 @@ export default function App() {
 
     const interval = setInterval(() => {
       setTime((prevTime) => {
-        // 🔔 Play sound in the last 5 seconds
+        // Play sound in the last 4 seconds
         if (prevTime <= 4 && prevTime > 1) {
           beep.play().catch((e) => {
             // Handle autoplay policy restrictions if any
@@ -192,16 +192,6 @@ export default function App() {
         )}
       </Button>
 
-      {/* {isRunning && (
-      
-          <Typography sx={styles.titleText}>
-            Exercise {exerciseCount} of {exercises}
-          </Typography>
-          <Typography sx={styles.titleText}>
-            Round {roundCount} of {rounds}
-          </Typography>
-       
-      )} */}
       {isRunning && (
         <Typography sx={styles.titleText}>
           Round {roundCount} of {rounds}
