@@ -14,6 +14,7 @@ import useWakeLock from "./hooks/useWakeLock";
 import { getBackgroundColor } from "./utils/backgroundColor";
 import { formatPhaseName } from "./utils/formatPhaseName";
 import { getTotalWorkoutTime } from "./utils/totalWorkoutTime";
+import workoutConfig from "./workoutConfig.json";
 const beep = new Audio(`${import.meta.env.BASE_URL}beep.wav`);
 
 const styles = {
@@ -23,7 +24,7 @@ const styles = {
     background: getBackgroundColor(phase),
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     color: "#fff",
     overflow: "hidden",
@@ -46,6 +47,7 @@ const styles = {
   },
   titleText: {
     fontFamily: "Rajdhani, sans-serif",
+    textAlign: "center",
     fontSize: {
       xs: "1.6rem", // extra-small screens (phones)
       sm: "2.4rem", // small screens (tablets)
@@ -56,11 +58,20 @@ const styles = {
 
 export default function App() {
   // Timer Config
-  const [workTime, setWorkTime] = useState(45);
-  const [restTime, setRestTime] = useState(30);
-  const [roundResetTime, setRoundResetTime] = useState(60);
-  const [exercises, setExercises] = useState(7);
-  const [rounds, setRounds] = useState(3);
+  // const [workTime, setWorkTime] = useState(45);
+  // const [restTime, setRestTime] = useState(30);
+  // const [roundResetTime, setRoundResetTime] = useState(60);
+  // const [exercises, setExercises] = useState(7);
+  // const [rounds, setRounds] = useState(3);
+  const [workTime, setWorkTime] = useState(workoutConfig.workTime);
+  const [restTime, setRestTime] = useState(workoutConfig.restTime);
+  const [roundResetTime, setRoundResetTime] = useState(
+    workoutConfig.roundResetTime
+  );
+  const [exercises, setExercises] = useState(workoutConfig.exercises);
+  const [rounds, setRounds] = useState(workoutConfig.rounds);
+  const exerciseList = workoutConfig.exerciseList;
+  const [currentExercise, setCurrentExercise] = useState(exerciseList[0]);
 
   // Timer State
   const [time, setTime] = useState(workTime);
@@ -68,6 +79,7 @@ export default function App() {
   const [phase, setPhase] = useState("work");
   const [exerciseCount, setExerciseCount] = useState(1);
   const [roundCount, setRoundCount] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Modal Controls
   const [openWorkModal, setOpenWorkModal] = useState(false);
@@ -103,6 +115,27 @@ export default function App() {
       setTime(workTime);
     }
   }, [workTime, isRunning]);
+
+  useEffect(() => {
+    if (phase === "work") {
+      setCurrentExercise(exerciseList[currentIndex]);
+    }
+  }, [phase, currentIndex, exerciseList]);
+
+  useEffect(() => {
+    if (phase === "rest") {
+      setCurrentIndex((prev) => {
+        const nextIndex = (prev + 1) % exerciseList.length;
+        setCurrentExercise(exerciseList[nextIndex]);
+        return nextIndex;
+      });
+    }
+
+    if (phase === "roundReset") {
+      setCurrentIndex(0);
+      setCurrentExercise(exerciseList[0]);
+    }
+  }, [phase, exerciseList]);
 
   // Main Timer Logic
   useEffect(() => {
@@ -166,8 +199,13 @@ export default function App() {
 
   return (
     <Box sx={styles.container(phase)}>
+      <header>header</header>
       {isRunning && (
         <Typography sx={styles.titleText}>
+          <h2 style={{ visibility: phase === "work" ? "hidden" : "visible" }}>
+            Next
+          </h2>
+          <h1>{currentExercise}</h1>
           Exercise {exerciseCount} of {exercises}
         </Typography>
       )}
@@ -268,6 +306,7 @@ export default function App() {
           onClose={handleCloseExercisesAdjusterModal}
         />
       </Modal>
+      <p>Footer</p>
     </Box>
   );
 }

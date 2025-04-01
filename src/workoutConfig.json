@@ -1,0 +1,17 @@
+{
+  "title": "Lower body workout",
+  "equipment": "Medium and Heavy dumbbels, floor mat",
+  "workTime": 5,
+  "restTime": 5,
+  "roundResetTime": 10,
+  "exercises": 6,
+  "rounds": 3,
+  "exerciseList": [
+    "Jumping Jacks",
+    "Squats",
+    "Push-ups",
+    "Mountain Climbers",
+    "Lunges",
+    "Plank"
+  ]
+}
