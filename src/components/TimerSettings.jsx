@@ -7,7 +7,7 @@ import { Box, Stack, Typography } from "@mui/material";
 
 const styles = {
   container: {
-    mt: 3,
+    // mt: 3,
     background: "rgba(34, 34, 34, 0.6)",
     width: "90%",
     borderRadius: "15px",
