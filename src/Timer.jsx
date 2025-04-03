@@ -115,8 +115,19 @@ export default function Timer() {
     setOpenRoundsAdjusterModal(false);
 
   // Toggle Start/Pause
+  // const toggleTimer = () => {
+  //   setIsRunning(!isRunning);
+  // };
+  // const toggleTimer = () => {
+  //   setIsRunning((prev) => !prev);
+  // };
   const toggleTimer = () => {
-    setIsRunning(!isRunning);
+    if (isRunning) {
+      // Stop beep if playing
+      beep.pause();
+      beep.currentTime = 0;
+    }
+    setIsRunning((prev) => !prev);
   };
 
   useWakeLock(isRunning);
@@ -133,18 +144,16 @@ export default function Timer() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Reset timer to work time if not running
-  useEffect(() => {
-    if (!isRunning) {
-      setTime(workTime);
-    }
-  }, [workTime, isRunning]);
-
   useEffect(() => {
     if (phase === "work") {
       setCurrentExercise(exerciseList[currentIndex]);
     }
   }, [phase, currentIndex, exerciseList]);
+
+  useEffect(() => {
+    beep.pause();
+    beep.currentTime = 0;
+  }, [phase]);
 
   useEffect(() => {
     if (phase === "rest") {
@@ -168,7 +177,7 @@ export default function Timer() {
     const interval = setInterval(() => {
       setTime((prevTime) => {
         // Play sound in the last 4 seconds
-        if (prevTime <= 4 && prevTime > 1) {
+        if (prevTime <= 4 && prevTime > 1 && isRunning) {
           beep.play().catch((e) => {
             // Handle autoplay policy restrictions if any
             console.warn("Audio play failed:", e);
@@ -207,7 +216,10 @@ export default function Timer() {
       });
     }, 1000);
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [
     isRunning,
     time,
