@@ -1,17 +1,18 @@
 {
   "title": "Lower body workout",
   "equipment": "Medium and Heavy dumbbels, floor mat",
-  "workTime": 5,
-  "restTime": 5,
-  "roundResetTime": 10,
-  "exercises": 6,
+  "workTime": 45,
+  "restTime": 25,
+  "roundResetTime": 60,
+  "exercises": 7,
   "rounds": 3,
   "exerciseList": [
-    "Jumping Jacks",
-    "Squats",
-    "Push-ups",
-    "Mountain Climbers",
-    "Lunges",
-    "Plank"
+    "Bent Arm Lateral Raises",
+    "Chest press",
+    "Dumbbell rear-delt fly",
+    "Right arm Dumbbell Row",
+    "Left arm Dumbbell Row",
+    "Tricep Skullcrusher",
+    "Biceps curl + Overhead Press"
   ]
 }
