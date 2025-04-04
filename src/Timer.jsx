@@ -246,11 +246,10 @@ export default function Timer() {
       <Box sx={styles.midContainer}>
         {isRunning && (
           <Typography sx={styles.titleText}>
-            <h5 style={{ visibility: phase === "work" ? "hidden" : "visible" }}>
+            <h2 style={{ visibility: phase === "work" ? "hidden" : "visible" }}>
               Next
-            </h5>
+            </h2>
             <h1>{currentExercise} </h1>
-            Exercise {exerciseCount} of {exercises}
           </Typography>
         )}
 
@@ -276,6 +275,7 @@ export default function Timer() {
         </Button>
         {isRunning && (
           <Typography sx={styles.titleText}>
+            Exercise {exerciseCount} of {exercises} <br />
             Round {roundCount} of {rounds}
           </Typography>
         )}
